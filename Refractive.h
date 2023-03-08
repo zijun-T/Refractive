@@ -24,8 +24,8 @@ class Refractive
 public:
 	Refractive(const char* EXP_file, ExpType file_type);//EXP_file是数据文件名，file_type是文件数据类型：如折射率数据，详情看ExpType
 	void measure(const char* EXP_file, ExpType EXP_type, const char* Flux_file);//可以用EXP_file的数据和Flux_file的通量数据对未知数据定标
-	void Progress(const char* Output_file, int jishu, double Energy, double Sample_thickness = 300e-6, double dx = 1e-6);//正解得到观测量随时间的变化
-	void Reverse(const char* Output_file, double Sample_thickness = 300e-6, double dx = 1e-6);//反解得到泵浦X射线的能量通量随时间的变化
+	void Forward_process(const char* Output_file, int jishu, double Energy, double Sample_thickness = 300e-6, double dx = 1e-6);//正解得到观测量随时间的变化
+	void Reverse_process(const char* Output_file, double Sample_thickness = 300e-6, double dx = 1e-6);//反解得到泵浦X射线的能量通量随时间的变化
 
 	ExpType fileType;
 	std::vector<double> EXP_Data;			//实验数据
