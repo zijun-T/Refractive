@@ -1,14 +1,5 @@
 #include "Refractive.h"
-#include <iostream>
-#include <math.h>
-#include <fstream>
-#include <sstream>
-#include <string.h>
-//#include <mpi.h>
-
 using namespace std;
-string Element;
-
 
 int main()
 {
@@ -30,7 +21,7 @@ int main()
 	double si[100];
 	double energy[100];
 
-    filein >> p; Element = p;
+    filein >> p; MineRefractive->Element = p;
     filein >> p; sscanf(p, "%lf", &dataPos[0]); filein >> p;
     num1 = int(dataPos[0]);
     for (int i = 0; i < num1; i++)

@@ -1,20 +1,6 @@
 #include "Refractive.h"
-#include <iostream>
-#include <math.h>
-#include <fstream>
-#include <sstream>
-#include <string.h>
-//#include <mpi.h>
-
-using namespace std;
 
 extern string Element;
-
-extern string inttoStr(int s);
-
-
-extern double lifetime(string Element, double rho);
-
 
 void Refractive::Reverse_process(const char* Output_file, double Sample_thickness, double dx)
 {

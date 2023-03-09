@@ -1,6 +1,12 @@
 #pragma once
-
+#include <iostream>
+#include <math.h>
+#include <fstream>
+#include <sstream>
+//#include <mpi.h>
 #include <vector>
+#include <string.h>
+using namespace std;
 
 #define Pi 3.141592653589793
 #define eps_0 8.85418781762039E-12 // s^4 A^2/(kg m^3)
@@ -26,6 +32,9 @@ public:
 	void measure(const char* EXP_file, ExpType EXP_type, const char* Flux_file);//可以用EXP_file的数据和Flux_file的通量数据对未知数据定标
 	void Forward_process(const char* Output_file, int jishu, double Energy, double Sample_thickness = 300e-6, double dx = 1e-6);//正解得到观测量随时间的变化
 	void Reverse_process(const char* Output_file, double Sample_thickness = 300e-6, double dx = 1e-6);//反解得到泵浦X射线的能量通量随时间的变化
+	double lifetime(string Element, double rho);
+	string inttoStr(int s);
+
 
 	ExpType fileType;
 	std::vector<double> EXP_Data;			//实验数据
@@ -35,6 +44,7 @@ public:
 	std::vector<double> T_l;				//晶格温度(K)
 
 
+	string Element;
 	double n_s			= 2.21e28;			//单位体积内的分子数(/m^3)
 
 	double Phy_0		= 10519.530989251682;	//初始相位
