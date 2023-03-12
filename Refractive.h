@@ -70,14 +70,14 @@ public:
 	double tao_e_l		= 3.e-12;			//(猜的值)电子晶格碰撞时间(s)
 	double tao_e_p		= .5;				//(猜的值)平均电子碰撞时间参数
 	double tao_h_p		= 0.336 * .5;		//(猜的值)平均晶格碰撞时间参数
-	double gamma		= 3.7e+7;				//电子空穴复合系数？(/s)
+	double gamma		= 0.2e+9;				//电子空穴复合系数？(/s)
 
 	double timel		= 1e-12;			//(猜的值)晶格温度相应时间(s)
 
 	double sigma		= 1.349e-24;		//每个分子的总反应截面(m^2)
-	//double E_eh		= 4.2 * e_0;		//电子空穴对能(J)
+	double E_eh		= 4.2 * e_0;		//电子空穴对能(J)
 	double lamda3		= 0.0000026;		//泵浦光沉积能量比例
-	double alpha		= 460.;			//平均每个泵浦光子能最终激发得到的自由电子数
+	double alpha		= 1600.;			//平均每个泵浦光子能最终激发得到的自由电子数
 
 };
 

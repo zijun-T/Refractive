@@ -61,7 +61,7 @@ Refractive::Refractive(const char* EXP_file, ExpType file_type)
 					this->Flux_Data.push_back(0);
 					this->EXP_Data.push_back(Data[i][1]);
 				}
-				std::cout << "折射率数据加载完毕！" << std::endl;
+				std::cout << "Refractive index data loaded!" << std::endl;
 				break;
 			case REFLECTIVE_DATA://如果EXP_file文件里的第二列已经是反射率数据的话
 				for (unsigned int i = 0; i < Data.size(); ++i)
@@ -69,7 +69,7 @@ Refractive::Refractive(const char* EXP_file, ExpType file_type)
 					this->Flux_Data.push_back(0);
 					this->EXP_Data.push_back(Data[i][1]);
 				}
-				std::cout << "反射率数据加载完毕！" << std::endl;
+				std::cout << "Reflectivity data loaded!" << std::endl;
 				break;
 			case NORMALIZED_DATA://如果EXP_file文件里第二列已经是相对光强数据的话
 				for (unsigned int i = 0; i < Data.size(); ++i)
@@ -77,7 +77,7 @@ Refractive::Refractive(const char* EXP_file, ExpType file_type)
 					this->Flux_Data.push_back(0);
 					this->EXP_Data.push_back(Data[i][1]);
 				}
-				std::cout << "相对光强数据加载完毕！" << std::endl;
+				std::cout << "Relative light intensity data loaded!" << std::endl;
 				break;
 			case PHASESHIFT_DATA://如果EXP_file文件里第二列已经是相位变化数据的话
 				for (unsigned int i = 0; i < Data.size(); ++i)
@@ -85,7 +85,7 @@ Refractive::Refractive(const char* EXP_file, ExpType file_type)
 					this->Flux_Data.push_back(0);
 					this->EXP_Data.push_back(Data[i][1]);
 				}
-				std::cout << "相位变化数据加载完毕！" << std::endl;
+				std::cout << "Phase change data loading complete!" << std::endl;
 				break;
 			default:
 				break;

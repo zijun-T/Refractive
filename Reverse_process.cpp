@@ -462,8 +462,9 @@ void Refractive::Reverse_process(const char* Output_file, double Sample_thicknes
 			}
 
 			output << t * dt << " " << this->Flux_Data[t] << std::endl;
+			
 
-			//std::cout << t * dt << " " << this->Flux_Data[t] << " " << Phy2 << " " << this->EXP_Data[t] << std::endl;
+			std::cout << t * dt << " " << this->Flux_Data[t] << " " << Phy2 << " " << this->EXP_Data[t] << std::endl;
 
 		}
 		output.close();

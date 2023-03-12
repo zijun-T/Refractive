@@ -1,9 +1,17 @@
 #include "Refractive.h"
+#include <iostream>
+#include <math.h>
+#include <fstream>
+#include <sstream>
+//#include <mpi.h>
+#include <vector>
+#include <string.h>
 using namespace std;
 
 int main()
 {
 	Refractive* MineRefractive = new Refractive("multi.txt", PHASESHIFT_DATA);
+    //Refractive* MineRefractive = new Refractive("multi2.txt", PHASESHIFT_DATA);
 	MineRefractive->omega_detec = 2 * Pi * c_0 / (1545.03e-9);
 
 	ifstream filein;
@@ -67,6 +75,13 @@ int main()
     MPI_Finalize();
 
     */
+    std::ofstream output1("flux.txt");
+    for (unsigned int t = 0; t < MineRefractive->EXP_Data.size(); ++t)
+    {
+        
+        output1 << 0.03 * 10000 * pow(E,-(t-mu[0])*(t-mu[0])/(2*si[0]*si[0]))/(2.50662827463*si[0])/1e-12 << std::endl;  
+    }
+   // exit(0);
 
     for (int i = 0; i < num1;i++)
     {
@@ -75,11 +90,11 @@ int main()
             for (unsigned int t = 0; t < MineRefractive->EXP_Data.size(); ++t)
             {
 
-                MineRefractive->Flux_Data[t] = 0.03 * 10000 * pow(E,-(t-mu[i])*(t-mu[i])/(2*si[i]*si[i]))/(2.50662827463*si[i])/1e-12;
+                MineRefractive->Flux_Data[t] = 0.03 * 100000 * pow(E,-(t-mu[i])*(t-mu[i])/(2*si[i]*si[i]))/(2.50662827463*si[i])/1e-12;
+                //MineRefractive->Flux_Data[1] = 0.003 * 10000 / MineRefractive->dt;
             }
-
             MineRefractive->Forward_process("out.dat", i, energy[j]);
-			//MineRefractive->Reverse_process("Si_1000_1.dat");
+			//MineRefractive->Reverse_process("out.dat");
         }
     }
 

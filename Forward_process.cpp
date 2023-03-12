@@ -155,8 +155,10 @@ void Refractive::Forward_process(const char* Output_file,int jishu, double Energ
 		std::ofstream output((Element+string("_")+string(inttoStr(int(Energy)))+string("_")+string(inttoStr(jishu+1))+string(".dat")).c_str());
 		//目前由于时间间隔dt>1ps, 所以假设T_l和T_e是同步的，
 		for (unsigned int t = 0; t < EXP_Data.size(); ++t)
+		//for (unsigned int t = 0; t < 500; ++t)
 		{
 			Phy = 0;//相位重置
+			//Flux_Data[t] = Flux_Data[t];
 
 			for (unsigned int i = 0; i < thick_size; ++i)
 			{
@@ -164,13 +166,13 @@ void Refractive::Forward_process(const char* Output_file,int jishu, double Energ
 				//不是边界的情况
 				if (i != 0 && i != (thick_size - 1))
 				{
-					T_l_new[i] = (this->k_l * (this->T_l[i + 1] - 2 * this->T_l[i] + this->T_l[i - 1]) / this->dx / this->dx
+					T_l_new[i] = (this->k_l * (this->T_l[i + 1] - 2 * this->T_l[i] + this->T_l[i - 1]) / this->dx / this->dx 
 						+ G_l * (this->T_e[i] - this->T_l[i])) * this->dt
 						+ this->T_l[i];
-
+	
 					T_e_new[i] = (this->k_e * (this->T_e[i + 1] - 2 * this->T_e[i] + this->T_e[i - 1]) / this->dx / this->dx
 						+ this->lamda3 * this->n_s * this->sigma * this->Flux_Data[t] * exp(-this->n_s * this->sigma * (i) * this->dx)
-						- G_e * (this->T_e[i] - this->T_l[i])) * this->dt
+						- G_e * (this->T_e[i] - this->T_l[i])) * this->dt 
 						+ this->T_e[i];
 				}
 				//在边界上的情况(第一类边界条件)
@@ -181,7 +183,7 @@ void Refractive::Forward_process(const char* Output_file,int jishu, double Energ
 						T_l_new[i] = (this->k_l * (this->T_l[i + 1] - 2 * this->T_l[i] + 300.) / this->dx / this->dx
 							+ G_l * (this->T_e[i] - this->T_l[i])) * this->dt
 							+ this->T_l[i];
-
+	
 						T_e_new[i] = (this->k_e * (this->T_e[i + 1] - 2 * this->T_e[i] + 300.) / this->dx / this->dx
 							+ this->lamda3 * this->n_s * this->sigma * this->Flux_Data[t] * exp(-this->n_s * this->sigma * (i) * this->dx)
 							- G_e * (this->T_e[i] - this->T_l[i])) * this->dt
@@ -192,7 +194,7 @@ void Refractive::Forward_process(const char* Output_file,int jishu, double Energ
 						T_l_new[i] = (this->k_l * (300. - 2 * this->T_l[i] + this->T_l[i - 1]) / this->dx / this->dx
 							+ G_l * (this->T_e[i] - this->T_l[i])) * this->dt
 							+ this->T_l[i];
-
+	
 						T_e_new[i] = (this->k_e * (300. - 2 * this->T_e[i] + this->T_e[i - 1]) / this->dx / this->dx
 							+ this->lamda3 * this->n_s * this->sigma * this->Flux_Data[t] * exp(-this->n_s * this->sigma * (i) * this->dx)
 							- G_e * (this->T_e[i] - this->T_l[i])) * this->dt
@@ -201,15 +203,16 @@ void Refractive::Forward_process(const char* Output_file,int jishu, double Energ
 				}
 
 				//3,电子密度
-				this->gamma = 1 / lifetime(Element, n_electron[i]);
-				//this->gamma = 1/1.26041e-06;
+				//this->gamma = 1 / lifetime(Element, n_electron[i]);
+				this->gamma = 3.7e+8;
 
 				n_electron_new[i] = (-this->gamma * this->n_electron[i]
 					+ this->alpha * this->n_s * this->sigma / this->E_pump * this->Flux_Data[t] * exp(-this->n_s * this->sigma * (i) * this->dx)) * this->dt
 					+ this->n_electron[i];
 
 				//4,带隙
-				double E_gap = (a[0] - a[1] * T_l_new[i] * T_l_new[i] / (-T_l_new[i] + a[2])) * e_0;
+				double E_gap = (a[0] - a[1] * T_l_new[i] * T_l_new[i] / (T_l_new[i] + a[2])) * e_0;
+				//double E_gap =1.42101;
 
 				//5,6,Ec和Ev
 				double E_c = E_gap / 2 + m_r * (hbar * this->omega_detec - E_gap) / this->m_c;
@@ -256,11 +259,41 @@ void Refractive::Forward_process(const char* Output_file,int jishu, double Energ
 
 				//相位
 				Phy += 2 * this->omega_detec * (n_new[i]-this->n_core) * this->dx / c_0;
+				//cout <<n_new[i] << endl;
+
+				if (i == 0)
+				{
+					cout << t * dt << " " <<T_l_new[0] << " " << n_new[i] << endl;
+				}
+				
+
+				if (n_new[i] > 10 || n_new[i] != n_new[i] || isinf(n_new[i]))
+			{
+				cout << "error" << " " << n_new[i] << endl;
+				output.close();
+				
+			}
+
+				
+				if (n_new[i] != n_new[i] || isinf(n_new[i]))
+			{
+				cout << "error!!!" << endl;
+				output.close();
+				exit(0);
+				
+			}
 			}
 			//反射率
 			double R = ((n_new[0] - 1) * (n_new[0] - 1)) / ((n_new[0] + 1) * (n_new[0] + 1));
 
 			output << t * dt << " "  << n_new[0] << " " << 1/this->gamma << std::endl;
+
+			//cout << t * dt << " " << n_new[0] << " " << endl;
+
+			//if (n_new[0] >4 || n_new[0] != n_new[0] || isinf(n_new[0]))
+			//n_new[0]
+
+			
 
 			//std::cout << R << std::endl;
 
